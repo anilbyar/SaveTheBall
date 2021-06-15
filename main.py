@@ -5,18 +5,11 @@ from pygame.locals import *
 
 py.init()
 
-
-
-
 screen_size = screen_x, screen_y = 700, 500
 game_screen_size: tuple = screen_size
 BLACK = 0, 0, 0
 WHITE: tuple = 255, 255, 255
 BORDERCOLOR = 22, 217, 247
-
-
-
-
 
 FPS = 300
 fpstimer = py.time.Clock()
@@ -30,7 +23,7 @@ blocker = py.image.load("blocker.png")
 ball = py.image.load("ball.png")
 
 ball_rect = ball.get_rect()
-ball_radius=50
+ball_radius = 50
 blocker_rect = blocker.get_rect()
 
 screen_size = py.display.get_window_size()
@@ -46,19 +39,13 @@ blocker_rect.center = game_screen_end[0] / 2, game_screen_end[1] - 2
 score = 0
 level = 1
 increase_in_score = 0
-high_score: int=0
+high_score: int = 0
 # Has shown high score
 shown: bool = False
 font = py.font.Font('freesansbold.ttf', 20)
 
 
-py.display.update()
-
-
-
-
 def restart_game():
-
     global score, level, ball_speed_in_y, ball_speed_in_x, ball_rect, blocker_rect
     score = 0
     level = 1
@@ -67,8 +54,10 @@ def restart_game():
     blocker_rect.center = game_screen_end[0] / 2, game_screen_end[1] - 2
     for i in range(3):
         screen.fill(BLACK)
-        restart_text = font.render("Restart in : " + str(3 - i) + " sec", True, WHITE)
-        screen.blit(restart_text, (screen_x / 2 - 80, screen_y / 2 - 40))
+        restart_text2 = font.render("Restart in : " + str(3 - i) + " sec", True, WHITE)
+        restart_text1 = font.render("Oops! You lost the Gam", True, WHITE)
+        screen.blit(restart_text1, (screen_x / 2 - 20 - restart_text1.get_rect().centerx / 2, screen_y / 2 - 40))
+        screen.blit(restart_text2, (screen_x / 2 - 20 - restart_text2.get_rect().centerx / 2, screen_y / 2))
         py.display.update()
         py.time.delay(1000)
 
