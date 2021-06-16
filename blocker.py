@@ -5,7 +5,7 @@ class Blocker:
     def __init__(self,screen):
         self.speed=3
         self.screen=screen
-        self.length = 200
+        self.length = 700
         self.start_x = (game_screen_end[0] - self.length) / 2
         self.start_y = game_screen_end[1] - 2
         self.end_x = self.start_x + self.length
