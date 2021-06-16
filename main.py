@@ -3,11 +3,9 @@ from blocker import Blocker
 from ball import Ball
 import pygame as py
 from pygame.locals import *
-
 from value import *
 
 py.init()
-
 fpstimer = py.time.Clock()
 
 screen = py.display.set_mode(screen_size)
@@ -15,8 +13,6 @@ py.display.set_caption("Save The Ball!")
 
 
 # TODO: CREATE BALL AND ITS MOTION
-
-
 
 ball = Ball(screen)
 
@@ -32,7 +28,16 @@ level = 1
 increase_in_score = 0
 high_score: int = 0
 # Has shown high score
-shown: bool = False
+
+# Image resources
+size_of_resume=25
+pause_img=pygame.image.load("pause.bmp").convert_alpha()
+pause_img=pygame.transform.smoothscale(pause_img,(size_of_resume,size_of_resume))
+resume_img=pygame.image.load("resume.bmp").convert_alpha()
+resume_img=pygame.transform.smoothscale(resume_img,(size_of_resume,size_of_resume))
+pause_resume_rect=Rect(600,5,25,25)
+isPlaying=True
+
 
 font = py.font.Font('freesansbold.ttf', 15)
 def check_exit_event():
@@ -88,11 +93,32 @@ def show_score_and_level():
 def update_score__level():
     global increase_in_score,score,level,ball
     increase_in_score += (0.1) * level*abs(ball.speed_y)
-    print(score," ",level)
     score += (0.1) * level
     if increase_in_score > 100*level:
         level += 1
         increase_in_score=0
+
+def change_ball_x_velocity():
+    global ball
+    sign=ball.speed_x/abs(ball.speed_x)
+    ball.speed_x=sign*abs(((blocker.center-ball.center_x)*3)/(blocker.length/2))
+    print(blocker.center," ",ball.center_x," ",ball.speed_x)
+
+
+# TODO: Check mouse action
+
+
+def check_pause():
+    mouse_pos=py.mouse.get_pos()
+    global isPlaying
+    if isPlaying:
+        screen.blit(pause_img,pause_resume_rect)
+        if mouse_pos[0]>pause_resume_rect.left and mouse_pos[0]>pause_resume_rect.left:  #check x position
+            if mouse_pos[1]>pause_resume_rect.top and mouse_pos[1]<pause_resume_rect.bottom:
+                isPlaying=False
+                screen.blit(resume_img,pause_resume_rect)
+    else:
+        screen.blit()
 
 while True:
     screen.fill(BLACK)
@@ -128,6 +154,7 @@ while True:
             restart_game()
         else:
             ball.change_color()
+            change_ball_x_velocity()
             ball.speed_y = -ball.speed_y
     else:
         if ball.start_x() < game_screen_start[0] or ball.end_x() > game_screen_end[0]:

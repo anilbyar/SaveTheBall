@@ -10,9 +10,11 @@ class Blocker:
         self.start_y = game_screen_end[1] - 2
         self.end_x = self.start_x + self.length
         self.end_y = self.start_y
+        self.center=self.start_x+self.length/2
         py.draw.line(screen, WHITE, (self.start_x, self.start_y), (self.end_x, self.end_y), 7)
 
     def move(self, x):
         self.start_x += x
         self.end_x = self.start_x + self.length
+        self.center=self.start_x+self.length/2
         py.draw.line(self.screen, WHITE, (self.start_x, self.start_y), (self.end_x, self.end_y), 7)

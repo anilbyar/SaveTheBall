@@ -2,11 +2,8 @@ from random import randint
 import pygame as py
 from value import *
 
-
-
 class Ball:
     # ball = None
-
     def __init__(self, screen):
         self.screen=screen
         self.center_x = 100
