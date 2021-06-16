@@ -5,7 +5,7 @@ BLACK = 0, 0, 0
 WHITE: tuple = 255, 255, 255
 BORDERCOLOR = 22, 217, 247
 
-FPS = 100
+FPS = 300
 
 
 ball_speed = ball_speed_in_x, ball_speed_in_y = 1, 1
