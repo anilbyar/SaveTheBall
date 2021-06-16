@@ -11,8 +11,8 @@ class Ball:
         self.screen=screen
         self.center_x = 100
         self.center_y = 10
-        self.radius = 10
-        self.speed_x = self.speed_y = 1
+        self.radius = 6
+        self.speed_x = self.speed_y = 2
         self.color=WHITE
         py.draw.circle(self.screen, self.color, (self.center_x, self.center_y), self.radius)
 
