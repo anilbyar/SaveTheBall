@@ -1,27 +1,62 @@
 import sys
-from size import *
+
 import pygame as py
 from pygame.locals import *
 
-py.init()
+from size import *
 
+py.init()
 
 fpstimer = py.time.Clock()
 
 screen = py.display.set_mode(screen_size)
 py.display.set_caption("Save The Ball!")
 
-blocker = py.image.load("blocker.png")
-#ball = py.image.load("ball.png")
+
+# TODO: CREATE BALL AND ITS MOTION
 
 
-ball=py.draw.circle(screen,WHITE,(100,100),ball_radius)
+class Ball:
 
-blocker_rect = blocker.get_rect()
+    # ball = None
+
+    def __init__(self):
+        self.centerx = 100
+        self.centery = 4
+        self.radius = 10
+        self.speedx = self.speedy = 1
+        py.draw.circle(screen, WHITE, (self.centerx, self.centery), self.radius)
+
+    def move(self, x, y):
+        self.centerx += self.speedx
+        self.centery += self.speedy
+        py.draw.circle(screen, WHITE, (self.centerx, self.centery), self.radius)
+
+
+ball = Ball()
+
+
+# Blocker details
+
+class Blocker:
+    def __init__(self):
+        self.length = 100
+        self.startx = (game_screen_end[0] - self.length) / 2
+        self.starty = 400
+        self.endx = self.startx + self.length
+        self.endy = self.starty
+        py.draw.line(screen, WHITE, (self.startx, self.starty), (self.endx, self.endy))
+
+    def move(self, x):
+        self.startx += x
+        self.endx = self.startx + self.length
+        py.draw.line(screen, WHITE, (self.startx, self.starty), (self.endx, self.endy))
+
+
+blocker = Blocker()
 
 screen_size = py.display.get_window_size()
 
-blocker_rect.center = game_screen_end[0] / 2, game_screen_end[1] - 2
 score = 0
 level = 1
 increase_in_score = 0
@@ -67,6 +102,8 @@ def show_score_and_level():
 
 
 while True:
+    screen.fill(BLACK)
+    blocker.move(0)
     increase_in_score += (0.001) * level
     score += increase_in_score
     if increase_in_score > 10000 * level:
@@ -74,7 +111,6 @@ while True:
         increase_in_score = 0
     #  Screen Size and updating according to size
 
-    blocker_rect.centery = game_screen_end[1] - 2
     # print(level, " ", score, " ", ball_speed_in_x, " ", ball_speed_in_y)
     # print(screen_size, " ", game_screen_start, " ", game_screen_end)
     keys = py.key.get_pressed()
@@ -84,34 +120,23 @@ while True:
             sys.exit()
         if events.type == KEYDOWN:
             if events.key == K_a:
-                if blocker_rect.left >= game_screen_start[0] + blocker_speed:
-                    blocker_rect = blocker_rect.move(-blocker_speed, 0)
+                if blocker.startx >= game_screen_start[0] + blocker_speed:
+                    blocker.move(-blocker_speed)
             if events.key == K_d:
-                if blocker_rect.right <= game_screen_end[0] - blocker_speed:
-                    blocker_rect = blocker_rect.move(blocker_speed, 0)
+                if blocker.endx <= game_screen_end[0] - blocker_speed:
+                    blocker.move(blocker_speed)
     if keys[K_a] or keys[K_LEFT]:
-        if blocker_rect.left >= game_screen_start[0] + blocker_speed:
-            blocker_rect = blocker_rect.move(-blocker_speed, 0)
+        if blocker.startx >= game_screen_start[0] + blocker_speed:
+            blocker.move(-blocker_speed)
     if keys[K_d] or keys[K_RIGHT]:
-        if blocker_rect.right <= game_screen_end[0] - blocker_speed:
-            blocker_rect = blocker_rect.move(blocker_speed, 0)
+        if blocker.endx <= game_screen_end[0] - blocker_speed:
+            blocker.move(blocker_speed)
 
     # Check game status
-    if ball.centery >= blocker_rect.centery:
-        if ball.right >= blocker_rect.left and ball.left <= blocker_rect.right:
-            ball_speed_in_y = -ball_speed_in_y
-        else:
-            print("You lost the Game!")
-            restart_game()
-    elif ball.top < game_screen_start[1]:
-        ball_speed_in_y = -ball_speed_in_y
-    if ball.left < game_screen_start[0] or ball.right > game_screen_end[0]:
-        ball_speed_in_x = -ball_speed_in_x
 
-    ball = ball.move_ip((ball_speed_in_x, ball_speed_in_y))
-    screen.fill(BLACK)
-    #py.draw.circle(screen,WHITE,ball.center,ball_radius)
-    screen.blit(blocker, blocker_rect)
+    # ball = ball.move_ip((ball_speed_in_x, ball_speed_in_y))
+    # py.draw.circle(screen,WHITE,ball.center,ball_radius)
+    ball.move(ball.centerx, ball.centery)
     show_score_and_level()
     high_score_check()
     # game_border=py.draw.rect(screen,BLACK,(game_screen_start,game_screen_end))
