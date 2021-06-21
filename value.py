@@ -17,7 +17,7 @@ PINK=      244,  38, 255
 BORDERCOLOR = 22, 217, 247
 COLORS=(WHITE, GREEN, RED, YELLOW, CYAN, BLUE, PURPLE, PINK)
 
-FPS = 200
+FPS = 250
 
 game_screen_start = [int(max(0, (screen_x - game_screen_size[0]) / 2)),
                      int(max(0, (screen_y - game_screen_size[1]) / 2))]

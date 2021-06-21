@@ -26,18 +26,18 @@ screen_size = py.display.get_window_size()
 score = 0
 level = 1
 increase_in_score = 0
-high_score: int = 0
+high_score: int
+try:
+    with open('highscore.txt', 'r') as f:
+        high_score = int(f.readline())
+        f.close()
+except FileNotFoundError:
+    with open('highscore.txt','w') as f:
+        high_score=0
+        f.write('0')
+        f.close()
+
 # Has shown high score
-
-# Image resources
-size_of_resume = 25
-pause_img = pygame.image.load("pause.bmp").convert_alpha()
-pause_img = pygame.transform.smoothscale(pause_img, (size_of_resume, size_of_resume))
-resume_img = pygame.image.load("resume.bmp").convert_alpha()
-resume_img = pygame.transform.smoothscale(resume_img, (size_of_resume, size_of_resume))
-pause_resume_rect = Rect(600, 5, 25, 25)
-isPlaying = True
-
 font = py.font.Font('freesansbold.ttf', 15)
 
 
@@ -79,6 +79,11 @@ def high_score_check():
     high_score_location = 200, 4
     if score > high_score:
         high_score = int(score)
+        with open('highscore.txt', 'w') as f:
+            f.flush()
+            f.write(str(high_score+1))
+            f.close()
+
         show_high_score = font.render("High Score Achieved  High Score: " + str(high_score), True, WHITE)
         screen.blit(show_high_score, high_score_location)
     else:
