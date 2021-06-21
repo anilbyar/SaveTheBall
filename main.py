@@ -10,35 +10,44 @@ from value import *
 py.init()
 fps_timer = py.time.Clock()
 
+# Set display screen
 screen = py.display.set_mode(screen_size)
 py.display.set_caption("Save The Ball!")
 
-# TODO: CREATE BALL AND ITS MOTION
-
+# Create a ball
 ball = Ball(screen)
 
-# Blocker details
-
+# Create horizontal blocker
 blocker = Blocker(screen)
 
+# Getting screen size
 screen_size = py.display.get_window_size()
 
+# Has shown high score
+font = py.font.Font('freesansbold.ttf', 15)
+
+# Initialize these value
 score = 0
 level = 1
 increase_in_score = 0
 high_score: int
-try:
-    with open('highscore.txt', 'r') as f:
-        high_score = int(f.readline())
-        f.close()
-except FileNotFoundError:
-    with open('highscore.txt','w') as f:
-        high_score=0
-        f.write('0')
-        f.close()
 
-# Has shown high score
-font = py.font.Font('freesansbold.ttf', 15)
+
+# Get high score if already played otherwise create file to store high score to 0
+def get_high_score():
+    global high_score
+    try:
+        with open('highscore.txt', 'r') as f:
+            high_score = int(f.readline())
+            f.close()
+    except PermissionError:
+        py.quit()
+        sys.exit()
+    except FileNotFoundError:
+        with open('highscore.txt', 'w') as f:
+            high_score = 0
+            f.write('0')
+            f.close()
 
 
 def check_exit_event():
@@ -59,7 +68,7 @@ def restart_game():
         screen.fill(BLACK)
         text_score = str(int(score))
         score_text_after_game_over = font.render("Your Score: " + text_score, True, WHITE)
-        restart_text2 = font.render("Restart in : " + str(3 - i) + " sec", True, WHITE)
+        restart_text2 = font.render("Restarting Game in : " + str(3 - i) + " sec", True, WHITE)
         restart_text1 = font.render("Oops! You lost the Game", True, WHITE)
         width = restart_text1.get_rect().height
         screen.blit(score_text_after_game_over,
@@ -81,7 +90,7 @@ def high_score_check():
         high_score = int(score)
         with open('highscore.txt', 'w') as f:
             f.flush()
-            f.write(str(high_score+1))
+            f.write(str(high_score + 1))
             f.close()
 
         show_high_score = font.render("High Score Achieved  High Score: " + str(high_score), True, WHITE)
@@ -115,8 +124,13 @@ def change_ball_x_velocity():
     ball.speed_x = sign * abs(((blocker.center - ball.center_x) * 3) / (blocker.length / 2))
 
 
-# TODO: Check mouse action
+# TODO: Check mouse for pause, resume and restart game
+def mouse_action():
+    pass
 
+
+# Getting high score before starting Game
+get_high_score()
 
 while True:
     screen.fill(BLACK)
@@ -146,7 +160,7 @@ while True:
     # Update ball motion on striking wall
 
     if ball.bottom() > blocker.start_y:
-        if ball.is_in_blocker(blocker):
+        if ball.is_out_of_blocker(blocker):
             restart_game()
         else:
             ball.change_color()
