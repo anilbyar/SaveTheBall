@@ -3,7 +3,7 @@ from value import *
 
 class Blocker:
     def __init__(self,screen):
-        self.speed=3
+        self.speed=2
         self.screen=screen
         self.length = 200
         self.start_x = (game_screen_end[0] - self.length) / 2

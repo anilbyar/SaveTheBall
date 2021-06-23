@@ -81,16 +81,18 @@ def restart_game():
                     ((game_screen_end[0] - restart_text2.get_rect().centerx) / 2, game_screen_end[1] / 2 + width))
         py.display.update()
         py.time.delay(1000)
+
     score = 0
     level = 1
 
-
+# Update high score in file when geme ends
 def update_high_score_infile():
-    global high_score
+    global high_score, high_score_changed
     if high_score_changed:
         with open('highscore.txt', 'w') as f:
             f.flush()
             f.write(str(high_score + 1))
+    high_score_changed=False
 
 
 def high_score_check():
@@ -127,7 +129,7 @@ def update_score_level():
 def change_ball_x_velocity():
     global ball
     sign = ball.speed_x / abs(ball.speed_x)
-    ball.speed_x = sign * abs(((blocker.center - ball.center_x) * 3) / (blocker.length / 2))
+    ball.speed_x = sign * abs(((blocker.center - ball.center_x) * 2) / (blocker.length / 2))
 
 
 # TODO: Check mouse for pause, resume and restart game
