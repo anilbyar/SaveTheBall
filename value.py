@@ -9,7 +9,7 @@ BLACK=       0,   0,   0
 WHITE=     255, 255, 255
 BORDERCOLOR = 22, 217, 247
 
-FPS = 200
+FPS = 350
 
 game_screen_start = [int(max(0, (screen_x - game_screen_size[0]) / 2)),
                      int(max(0, (screen_y - game_screen_size[1]) / 2))]
