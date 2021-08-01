@@ -16,4 +16,15 @@ This game is just for my practice project. In this Game you have to save the bal
 2. Download `pygame` package
 3. Run `main.py` in ide you are using
 
+## Game Screenshot
+
+### Inside Game
+![](https://github.com/anilbyar/SaveTheBall/blob/main/img/ingame.png)
+
+### Game lost
+![](https://github.com/anilbyar/SaveTheBall/blob/main/img/game_lost.png)
+
+### Waiting for next game
+![](https://github.com/anilbyar/SaveTheBall/blob/main/img/wait_for_next_game.png)
+
 **Note:** Here only the code is mine.  
